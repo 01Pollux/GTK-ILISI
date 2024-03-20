@@ -1,0 +1,212 @@
+<Application>
+	<Window Size="700x400" Icon="abdo.png">
+		<Headerbar Title="Test des fonction GTK+" Layout="icon,menu:minimize,maximize,close"></Headerbar>
+		<Box>
+			<Toolbar>
+				<ToolbarItem Name="Fichier">
+					<ToolbarItem Name="Enregistrer"></ToolbarItem>
+					<ToolbarItem Name="Enregistrer au format Adobe PDF"></ToolbarItem>
+					<ToolbarItem Name="Ouvrir"></ToolbarItem>
+					<ToolbarItem Name="Fermer"></ToolbarItem>
+				</ToolbarItem>
+				<ToolbarItem Name="Acceuil">
+					<ToolbarItem Name="Ajouter un project">
+						<ToolbarItem Name="C++/C"></ToolbarItem>
+						<ToolbarItem Name="C#"></ToolbarItem>
+						<ToolbarItem Name="Java"></ToolbarItem>
+					</ToolbarItem>
+					<ToolbarItem Name="Supprimer ce project"></ToolbarItem>
+					<ToolbarItem Name="Connecter au services">
+						<ToolbarItem Name="Database">
+							<ToolbarItem Name="MySQL"></ToolbarItem>
+							<ToolbarItem Name="MsSQL"></ToolbarItem>
+							<ToolbarItem Name="MangoDB"></ToolbarItem>
+						</ToolbarItem>
+					</ToolbarItem>
+				</ToolbarItem>
+				<ToolbarItem Name="Insertion">
+					<ToolbarItem Name="Inserez un texte"></ToolbarItem>
+					<ToolbarItem Name="Inserez un image"></ToolbarItem>
+					<ToolbarItem></ToolbarItem>
+					<ToolbarItem Name="Inserez un fichier"></ToolbarItem>
+					<ToolbarItem Name="Inserez un project"></ToolbarItem>
+				</ToolbarItem>
+			</Toolbar>
+
+			<Box Fixed="true">
+				<Box FixedPosition ="0,0">
+					<Box>
+						<Private>
+							<Align Horizontal="End"></Align>
+						</Private>
+
+						<Label Text="Liste choix multiple"></Label>
+
+						<Box Padding="0">
+							<Private>
+								<Style>
+									<S0 Text="* { border: black solid 2px; }"></S0>
+								</Style>
+							</Private>
+
+							<Button Type="CheckBox" Text="Mon 1er choix"></Button>
+							<Button Type="CheckBox" Text="Mon 2d choix"></Button>
+							<Button Type="CheckBox" Text="Mon 3e choix"></Button>
+							<Button Type="CheckBox" Text="Mon dernier choix"></Button>
+						</Box>
+
+					</Box>
+
+					<Box Orientation="H">
+						<Box>
+							<Label Text="Liste choix multiple"></Label>
+
+							<Box Padding="0" Fill="false">
+								<Private>
+									<Align Horizontal="Start"></Align>
+									<Style>
+										<S0 Text="* { border: black solid 2px; }"></S0>
+									</Style>
+								</Private>
+
+								<Box Orientation="H">
+									<Label Text="Choix parmis 5"></Label>
+									<ComboBox>
+										<ComboBoxItem Text="Choix 1"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 2"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 3"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 4"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 5"></ComboBoxItem>
+									</ComboBox>
+								</Box>
+
+								<Box Orientation="H">
+									<Label Text="Choix parmis 7"></Label>
+									<ComboBox>
+										<ComboBoxItem Text="Choix 1"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 2"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 3"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 4"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 5"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 6"></ComboBoxItem>
+										<ComboBoxItem Text="Choix 7"></ComboBoxItem>
+									</ComboBox>
+								</Box>
+							</Box>
+
+						</Box>
+
+						<Box Insert="End">
+							<Label Text="Buttons radio Horizontales">
+								<Private>
+									<Align Horizontal="Start"></Align>
+								</Private>
+							</Label>
+							<Box Padding="0" Fill="false">
+								<Private>
+									<Align Horizontal="Start"></Align>
+									<Style>
+										<S0 Text="* { border: black solid 2px; }"></S0>
+									</Style>
+								</Private>
+
+								<Box Orientation="H">
+
+									<Button Type="Radio" Text="Premier" Id="BtH1"></Button>
+									<Button Type="Radio" Text="Deuxieme" LinkId="BtH1"></Button>
+									<Button Type="Radio" Text="Troisieme" LinkId="BtH1"></Button>
+								</Box>
+							</Box>
+						</Box>
+					</Box>
+
+
+
+					<Box Orientation="H">
+						<Box Orientation="H">
+							<Private>
+								<Align Horizontal="Start" Vertical="Start"></Align>
+							</Private>
+							<Button Type="Label" Text="OK" Id="OKButton" Fill="false" Expand="false">
+								<Private>
+									<Size Width="200"></Size>
+								</Private>
+							</Button>
+							<Button Type="Label" Text="Quitter" Id="QuitButton" Fill="false" Expand="false">
+								<Private>
+									<Size Width="200"></Size>
+								</Private>
+							</Button>
+						</Box>
+
+
+						<Box Insert="End">
+							<Label Text="Saisie du login et de mot de passe: zone de text">
+
+								<Private>
+									<Align Horizontal="Start"></Align>
+								</Private>
+							</Label>
+
+							<Box>
+								<Private>
+									<Align Horizontal="Start"></Align>
+									<Style>
+										<S0 Text="* { border: black solid 2px; }"></S0>
+									</Style>
+								</Private>
+								<TextInput HintText="Login">
+									<Private>
+										<Size Width="400"></Size>
+									</Private>
+								</TextInput>
+								<TextInput HintText="Mot de pass">
+									<Private>
+										<Size Width="400"></Size>
+									</Private>
+								</TextInput>
+
+								<Button Type="CheckBox" Text="Mainteni la connexion"></Button>
+								<Button Padding="10" Type="Label" Text="Se connecter">
+									<Private>
+										<Align Horizontal="Start"></Align>
+									</Private>
+								</Button>
+							</Box>
+						</Box>
+
+
+
+					</Box>
+
+					<Image Path="2209427_83125267_p0.png" Size="300x300" Id="Image">
+						<Private>
+							<Hidden></Hidden>
+						</Private>
+					</Image>
+				</Box>
+
+				<Box FixedPosition="10,400">
+					<Label Text="Button radio Vertical"></Label>
+
+					<Box Padding="0" Fill="false">
+						<Private>
+							<Align Horizontal="Start"></Align>
+							<Style>
+								<S0 Text="* { border: black solid 2px; }"></S0>
+							</Style>
+							<Size Width="200"></Size>
+						</Private>
+
+						<Button Type="Radio" Text="Faible" Id="VertRad"></Button>
+						<Button Type="Radio" Text="Moyen" LinkId="VertRad"></Button>
+						<Button Type="Radio" Text="Assez Bien" LinkId="VertRad"></Button>
+						<Button Type="Radio" Text="Bien" LinkId="VertRad"></Button>
+						<Button Type="Radio" Text="T. Bien" LinkId="VertRad"></Button>
+					</Box>
+				</Box>
+			</Box>
+
+		</Box>
+	</Window>
+</Application>

@@ -1,0 +1,44 @@
+<Application>
+	<Window Size="800x600" Title=" " Id="SecondWindow">
+		<Box Fixed="true">
+			<Shader VS="vs.glsl" PS="fs.glsl" Expand="true" FixedPosition="0,0">
+				<Private>
+					<Size Width="800" Height="600">
+					</Size>
+				</Private>
+			</Shader>
+
+			<Box Orientation="H" FixedPosition="445,415">
+				<ComboBox Active="0" Id="Gamemode">
+					<ComboBoxItem Text="Player Vs Player"></ComboBoxItem>
+					<ComboBoxItem Text="Player Vs Bot"></ComboBoxItem>
+					<ComboBoxItem Text="Bot Vs Bot"></ComboBoxItem>
+				</ComboBox>
+				<ComboBox Active="0" Id="Difficulty">
+					<ComboBoxItem Text="Easy"></ComboBoxItem>
+					<ComboBoxItem Text="Medium"></ComboBoxItem>
+					<ComboBoxItem Text="Hard"></ComboBoxItem>
+					<ComboBoxItem Text="Expert"></ComboBoxItem>
+				</ComboBox>
+			</Box>
+			<Box Orientation="H" FixedPosition="445,460">
+				<Button Type="Label" Text=" " Id="playBTN">
+					<Private>
+						<Style>
+							<S0 Text="* {background-image: url('play.png'); }"></S0>
+						</Style>
+						<Size Width="150" Height="50"></Size>
+					</Private>
+				</Button>
+				<Button Type="Label" Text=" " Id="quitBTN">
+					<Private>
+						<Style>
+							<S0 Text="* {background-image: url('exit.png'); }"></S0>
+						</Style>
+						<Size Width="150" Height="50"></Size>
+					</Private>
+				</Button>
+			</Box>
+		</Box>
+	</Window>
+</Application>

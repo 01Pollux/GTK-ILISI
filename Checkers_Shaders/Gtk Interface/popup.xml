@@ -1,0 +1,24 @@
+<Application>
+	<Window Size="500x200" Title="" Id="SecondWindow">
+		<Headerbar Layout="menu:close">
+		</Headerbar>
+		<Box>
+			<Box Orientation="H">
+				<Private>
+					<Align Horizontal="Center"></Align>
+				</Private>
+				<Image Path="2209427_83215207_p0.png" Size="50x50">
+				</Image>
+				<Label Text="Voulez vous afficher une image?"></Label>
+			</Box>
+			<Box Orientation="H">
+				<Private>
+					<Align Horizontal="Center"></Align>
+				</Private>
+				<Button Type="Label" Id="OkButton" Text="Oui"></Button>
+				<Button Type="Label" Id="NoButton" Text="Non"></Button>
+				<Button Type="Label" Id="QuitButton" Text="Annuler"></Button>
+			</Box>
+		</Box>
+	</Window>
+</Application>

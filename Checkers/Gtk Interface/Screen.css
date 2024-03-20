@@ -1,0 +1,33 @@
+#CheckerGrid {
+    background-image: url("checkers.png");
+}
+
+button.Checker {
+    border-radius: 100%;
+    border-width: 0px;
+    border-color: transparent;
+    color: transparent;
+    background: transparent;
+    opacity: 0;
+    box-shadow: none;
+}
+
+button.CheckerWhite {
+    background: #FFFFFF;
+    opacity: 1;
+}
+
+button.CheckerBlack {
+    background: #000000;
+    opacity: 1;
+}
+
+button.CheckerWhitePre {
+    background: #FFFFFF;
+    opacity: 0.5;
+}
+
+button.CheckerBlackPre {
+    background: #000000;
+    opacity: 0.5;
+}

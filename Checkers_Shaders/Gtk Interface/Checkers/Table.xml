@@ -1,0 +1,120 @@
+﻿<Application>
+	<Window Size="640x630" Title="" Id="SecondWindow">
+		<Headerbar Title=" " Layout="icon:close">
+			<Button Pack="End" Type="Label" Text=">"></Button>
+			<Button Pack="End" Type="Label" Text="<"></Button>
+		</Headerbar>
+		<Box Fixed="true" Id="MainBox">
+			<Grid Fill="true" Expand="true">
+                <Private>
+                    <Align Vertical="Start"></Align>
+                </Private>
+                <GridTr>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                </GridTr>
+                <GridTr>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                </GridTr>
+                <GridTr>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                </GridTr>
+                <GridTr>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                </GridTr>
+                <GridTr>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                </GridTr>
+                <GridTr>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                </GridTr>
+                <GridTr>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                </GridTr>
+                <GridTr>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Grey.png" Size="80x80"></Image></GridTd>
+                    <GridTd Width="1" Height="1"><Image Path="Checkers/Black.png" Size="80x80"></Image></GridTd>
+                </GridTr>
+            </Grid>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b0" Size="80x80" FixedPosition="0,0"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b1" Size="80x80" FixedPosition="160,0"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b2" Size="80x80" FixedPosition="320,0"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b3" Size="80x80" FixedPosition="480,0"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b4" Size="80x80" FixedPosition="80,80"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b5" Size="80x80" FixedPosition="240,80"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b6" Size="80x80" FixedPosition="400,80"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b7" Size="80x80" FixedPosition="560,80"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b8" Size="80x80" FixedPosition="0,160"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b9" Size="80x80" FixedPosition="160,160"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b10" Size="80x80" FixedPosition="320,160"></Image>
+            <Image Path="Checkers/pblack.png" Id="Pawn_b11" Size="80x80" FixedPosition="480,160"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w0" Size="80x80" FixedPosition="80,400"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w1" Size="80x80" FixedPosition="240,400"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w2" Size="80x80" FixedPosition="400,400"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w3" Size="80x80" FixedPosition="560,400"></Image>
+            <Image Path="Checkers/predq.png" Id="Pawn_w4" Size="80x80" FixedPosition="0,480"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w5" Size="80x80" FixedPosition="160,480"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w6" Size="80x80" FixedPosition="320,480"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w7" Size="80x80" FixedPosition="480,480"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w8" Size="80x80" FixedPosition="80,560"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w9" Size="80x80" FixedPosition="240,560"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w10" Size="80x80" FixedPosition="400,560"></Image>
+            <Image Path="Checkers/pred.png" Id="Pawn_w11" Size="80x80" FixedPosition="560,560"></Image>
+            <Image Path="Checkers/predf.png" Id="Pawn_f" Size="80x80"><Private><Hidden></Hidden></Private></Image>
+        </Box>
+    </Window>
+</Application>

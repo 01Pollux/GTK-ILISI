@@ -1,0 +1,27 @@
+<Application>
+	<Window Size="400x170" Title=" " Id="SecondWindow">
+		<Headerbar Title=" " Layout="menu:close">
+		</Headerbar>
+		<Box>
+			<Private>
+				<Align Vertical="Center"></Align>
+			</Private>
+			<Box Orientation="H">
+				<Private>
+					<Align Horizontal="Center" ></Align>
+				</Private>
+				<Image Path="Icon.ico" Size="50x50">
+				</Image>
+				<Label Text="Voulez vous afficher une image?"></Label>
+			</Box>
+			<Box Orientation="H">
+				<Private>
+					<Align Horizontal="Center"></Align>
+				</Private>
+				<Button Type="Mnemonic" Text="Oui"></Button>
+				<Button Type="Mnemonic" Text="Non"></Button>
+				<Button Type="Mnemonic" Text="Annuler"></Button>
+			</Box>
+		</Box>
+	</Window>
+</Application>

@@ -1,0 +1,43 @@
+<Application>
+
+	<Window Size="800x500" Title="" Icon="Icon.ico" Id="window">
+		<Private>
+			<Style>
+				<S0 Text="* { background-image:url('interface.png'); }"></S0>
+			</Style>
+		</Private>
+
+		<Headerbar Title="Checkers" Layout="icon,menu:minimize,maximize,close"></Headerbar>
+		
+		
+		<Box Fixed="true">
+			
+			
+			<Box Orientation="H" FixedPosition="445,415">
+			
+
+					<Button Type="Label" Text=" " Id="playBTN">
+						<Private>
+							<Style>
+								<S0 Text="* {background-image: url('play.png'); }"></S0>
+							</Style>
+							<Size Width="150" Height="50"></Size>
+						</Private>
+					</Button>
+					<Button Type="Label" Text=" " Id="quitBTN">
+						<Private>
+							<Style>
+								<S0 Text="* {background-image: url('exit.png'); }"></S0>
+							</Style>
+							<Size Width="150" Height="50"></Size>
+						</Private>
+					</Button>
+				
+			</Box>	
+		</Box>
+
+	</Window>
+	
+	
+	
+</Application>

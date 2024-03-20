@@ -1,0 +1,841 @@
+<head>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        #canvas {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: fixed;
+            position: relative;
+        }
+        
+        .error {
+            font-family: Consolas;
+            font-size: 1.2em;
+            color: black;
+            box-sizing: border-box;
+            background-color: lightcoral;
+            border-radius: 2px;
+            border-color: lightblue;
+            border-width: thin;
+            border-style: solid;
+            line-height: 1.4em;
+            cursor:pointer;
+        }
+        .error:hover {
+            color: black;
+            background-color: brown;
+            border-color: blue;
+        }
+        #message {
+            font-family: Consolas;
+            font-size: 1.2em;
+            color: #ccc;
+            background-color: black;
+            font-weight: bold;
+            z-index: 2;
+            position: absolute;
+        }
+
+        #dat_gui_container {
+            position: absolute;
+            left: 0px;   /* position inside relatively positioned parent */
+            top: 0px;
+            z-index: 3;   /* adjust as needed */
+        }
+
+        /* Pause Button Style */
+        
+        /* Screenshot Button Style */
+
+        /* Reload Button Style */
+    </style>
+</head>
+<body>
+    <div id="message"></div>
+    <div id="dat_gui_container"></div>
+    <div id="container">
+        <!-- Pause Element -->
+    </div>
+    <!-- Screenshot Element -->
+    <!-- Reload Element -->
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+<!-- Stats.js -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js' onload="
+let stats = new Stats();
+compileTimePanel = stats.addPanel(new Stats.Panel('CT MS', '#ff8', '#221'));
+stats.showPanel(1);
+document.body.appendChild(stats.domElement);
+requestAnimationFrame(function loop() {
+    stats.update();
+    requestAnimationFrame(loop);
+});
+"></script>
+<!-- dat.gui -->
+
+<canvas id="canvas"></canvas>
+
+<!-- Shaders -->
+
+<script id='c:/Users/medra/source/repos/01Pollux/Gtk-Interface/Gtk Interface/fs.glsl' type='x-shader/x-fragment'>
+uniform vec3        iResolution;
+uniform float       iTime;
+uniform float       iTimeDelta;
+uniform int         iFrame;
+uniform vec4        iDate;
+uniform vec3        iChannelResolution[10];
+uniform vec4        iMouse;
+uniform vec4        iMouseButton;
+uniform sampler2D   iChannel0;
+uniform sampler2D   iChannel1;
+uniform sampler2D   iChannel2;
+uniform sampler2D   iChannel3;
+uniform sampler2D   iChannel4;
+uniform sampler2D   iChannel5;
+uniform sampler2D   iChannel6;
+uniform sampler2D   iChannel7;
+uniform sampler2D   iChannel8;
+uniform sampler2D   iChannel9;
+uniform sampler2D   iKeyboard;
+uniform float       iSampleRate;
+
+#define iGlobalTime iTime
+#define iGlobalFrame iFrame
+
+#define SHADER_TOY
+
+
+const float eps = .01, far = 33. ;	//raymarching parameters
+const int iter  =120, AA = 1;
+
+const float s1 = 0.447213595, 	//sin of pieces grid
+    		c1 = 0.894427191, 	//cos of pieces grid
+    		c2 = 0.796083798,	//cos of clip box
+    		s2 = 0.605186405,	//sin of clip box
+    		r5 = 2.236067977; 	//root 5
+
+const vec3 lightPos = vec3(9,8,6);
+const vec3 lightCol = vec3(1.,.9,.8);
+
+//smoothstep spline
+float spline(float t){
+    return t * t * (3. - 2.*t);
+}
+
+float box(vec3 p, vec3 s){
+	p = abs(p) - s;
+    return min(max(p.x,max(p.y,p.z)),0.0) + length(max(p,0.0));
+}
+
+//octagon fold then sphere test
+//s = ring radius, sphere radius
+float spheres(vec3 p, vec2 s){
+    p.xz = abs(p.xz);
+    vec2 fold = vec2(-.70710678,.70710678);
+    p.xz -= 2. * max(dot(p.xz, fold), 0.) * fold;
+    return distance(p, vec3(0.9238795* s.x,0.,0.3826834*s.x)) - s.y;
+}
+
+//cylinder with smoothstepped radius
+float base(vec3 p){
+  float t = spline(-p.y*.75+.33);
+  vec2 s = vec2(.4*t*t +.2,.99); 
+  vec2 d = abs(vec2(length(p.xz),p.y)) - s;
+  return min(max(d.x,d.y),0.0) + length(max(d,0.0));    
+}
+
+//square cross-section torus, s = major, minor radius 
+float sharpTorus(vec3 p, vec2 s){
+	float d = length(p.xz) - s.x;
+    vec2 v = vec2(d, p.y);
+    return dot(abs(v),vec2(.70710678)) -s.y;
+}
+
+//from iq's primitives
+float sdEllipsoid( in vec3 p, in vec3 r )
+{
+    return (length( p/r ) - 1.0) * min(min(r.x,r.y),r.z);
+}
+
+//put it all together to make a queen
+float queen(vec3 p){
+	float d = base(p);
+    p.y += .5;
+    d = max(d, - sharpTorus(p,vec2(.49,.05)));
+    p.y += .25;
+    d = max(d, - sharpTorus(p,vec2(.6,.05)));
+    p.y -= 1.78;
+    d = max(d, - spheres(p, vec2(.33,.12)));
+    p.y -= .08;
+    d = min(d, sdEllipsoid(p,vec3(.15,.25,.15)));
+    return d;  
+}
+
+//mirrored repeating grid of queens clipped by bounding box
+float queens(vec3 p){
+    float flip = dot(p.xz, vec2(1.)) >= 0. ? 1. : -1.;
+    p.xz *= flip;
+    vec3 q = p;
+	p.xz -= 1.;
+	p.xz = mat2(c1,-s1,s1,c1)*p.xz;
+    p.xz = mod(p.xz + r5, 2.*r5) - r5;  
+    q.xz -= vec2 (4.2,3.6);
+    q.xz = mat2(c2,s2,-s2,c2) * q.xz;
+
+    return max(queen(p),box(q,vec3(6,1.5,3)));
+}
+
+float board(vec3 p){
+    return box(p,vec3(7.99,1,7.99));
+}
+
+float ground(vec3 p){
+    p.y += 2.;
+    return box(p,vec3(13,.8,13));
+}
+
+float DE(vec3 p){
+    vec3 q = p;
+    q.y += 2.;
+    return min(ground(p),min(queens(p), board(q)));
+}
+
+
+float march(vec3 ro, vec3 rd){
+ 	float t = 0., d = 1e10;
+    for(int i=0;i<iter;i++){
+     	t += .5 * (d = DE(ro+t*rd));
+        if(d<=eps || t>= far) break;
+    }
+    return t+.5*d;
+}
+
+float shadow(vec3 ro, vec3 rd, float dist, float k){
+    float t = eps, shade = 1.,  d;
+    for(int i=0; i<50; i++){
+        d = DE(ro + t*rd);
+        if(d < 0.){
+            shade = 0.;
+            break;
+        }
+        shade = min (shade, smoothstep(0.,.5,d*k/t));
+        t+= clamp(.6*d,.02,.2);
+        if(t>dist) break;
+    }
+    return shade;
+}
+
+vec3 getNorm(vec3 p){
+    vec2 e = vec2(eps,0);
+    return normalize(vec3(DE(p+e.xyy)-DE(p-e.xyy),DE(p+e.yxy)-DE(p-e.yxy),DE(p+e.yyx)-DE(p-e.yyx)));
+}
+
+//xyz for albedo, w controls specular / reflections
+vec4 getMaterial(vec3 p){
+    float bw = mod (floor(p.x*.5) + floor(p.z*.5), 2.);
+    float d = DE(p);
+	if(d == queens(p)) return bw > 0. ? vec4(.05,.05,.05, 3.15) : vec4 (.9,.9,.7, 3.15);
+    if(d == ground(p)) return vec4(pow(vec3(1.0,1.0,1.0),vec3(2.2)),2.02); 
+    return bw > 0. ? vec4(.7,.7,.7,130.99) : vec4 (.1,.1,.1,130.99);          
+}
+
+vec3 getReflection(vec3 ro, vec3 rd){
+    float t = march(ro,rd);
+    vec3 p = ro + t*rd;
+    vec3 col;
+    if(t<far){
+        vec3 p = ro + t*rd;
+        vec3 n = getNorm(p);
+        vec3 r = reflect(rd, n);
+        vec4 mat = getMaterial(p);
+        vec3 l = lightPos - p;
+    	float d = length(l);
+    	l *= 1./d;
+        float atten = 70. /( 1. + d*d);
+        float diff = max(dot(n,l), 0.) * atten;
+    	float amb = .05 + .01 * n.y;
+    	float spec = pow(max(dot(r,l),0.),floor(mat.w))*(fract(mat.w)*3.*sqrt(atten));
+        col = lightCol * (mat.rgb*(diff+amb)+spec);  
+    }
+    else col = .05*pow(vec3(1.0,1.0,1.0),vec3(2.2));
+    return col;
+}
+
+vec3 light(vec3 p, vec3 v){
+	vec3 n = getNorm(p);
+    vec3 r = reflect(v, n);
+    vec4 mat = getMaterial(p);
+    vec3 l = lightPos - p;
+    float d = length(l);
+    l *= 1./d;
+    float atten = 70. /( 1. + d*d);
+    atten = min(atten, shadow(p, l, 7., 20.));
+    float diff = max(dot(n,l), 0.) * atten;
+    float amb = .05 + .01 * n.y;
+    float spec = pow(max(dot(r,l),0.),floor(mat.w))*(fract(mat.w)*3.*sqrt(atten));
+    vec3 col = lightCol * (mat.rgb*(diff+amb)+spec);  
+    
+    if(mat.w > 100.){
+        col += .15*getReflection(p+(3.*eps*r), r);
+    }
+    return col;
+}
+
+vec3 getCam(vec2 uv, vec3 ro){
+    
+    vec3 f = normalize(-ro);
+    vec3 r = cross(vec3(0,1,0),f);
+    vec3 u = cross(f,r);
+    vec3 rd = normalize(f + uv.x*r + uv.y *u);
+    return rd;
+}
+
+//iq's sphere density function for glowing light 
+float sphDensity( vec3  ro, vec3  rd,   // ray origin, ray direction
+                 vec3  sc, float sr) {  // sphere center, sphere radius)       
+    vec3  rc = (ro - sc)/sr;
+	
+    // find intersection with sphere
+    float b = dot(rd,rc);
+    float c = dot(rc,rc) - 1.0;
+    float h = b*b - c;
+
+    // not intersecting
+    if( h<0.0 ) return 0.0;
+	
+    h = sqrt( h );
+    
+    //return h*h*h;
+
+    float t1 = -b - h;
+    float t2 = -b + h;
+
+    // analytical integration of an inverse squared density
+    float i1 = -(c*t1 + b*t1*t1 + t1*t1*t1/3.0);
+    float i2 = -(c*t2 + b*t2*t2 + t2*t2*t2/3.0);
+    return (i2-i1)*1.25;
+}
+
+void mainImage( in vec2 fragCoord, out vec4 fragColor)
+{	
+    vec4 s = sin(vec4((iTime * 1.0 * 0.1)*.5,(iTime * 1.0 * 0.1)*.5+1.57,(iTime * 1.0 * 0.1)*.2,(iTime * 1.0 * 0.1)*.3));
+    vec3 ro = vec3((12.+2.*s.z)*s.x ,3. + s.w ,(12.+2.*s.z)*s.y);
+    vec3 rd;
+    vec3 col = vec3 (0);
+    float f = 1. / float(AA);
+    for(int i=0;i<AA;i++){
+        for(int j=0;j<AA;j++){
+            vec2 uv = (fragCoord.xy - .5 * iResolution.xy + f*vec2(i,j)) / iResolution.y;
+    		rd = getCam(uv,ro);
+    		float t = march(ro,rd);
+    		col += t<far ? (light(ro+t*rd, rd)) : .05*pow(vec3(1.0,1.0,1.0).rgb,vec3(2.2));            
+        }
+    }
+    col *= (f*f);
+    if(dot(rd,normalize(lightPos-ro)) > .99) {
+        
+        float s = sphDensity(ro,rd,lightPos,2.);
+        col += clamp(s*s,0.,1.5) * lightCol;
+    }
+    col = pow(col, vec3(1./2.2));
+	fragColor = (vec4(col,1.0));
+}
+</script>
+
+<script type="text/javascript">
+    let vscode = undefined;
+    if (typeof acquireVsCodeApi === 'function') {
+        vscode = acquireVsCodeApi();
+    }
+    var compileTimePanel;
+
+    let revealError = function(line, file) {
+        if (vscode) {
+            vscode.postMessage({
+                command: 'showGlslsError',
+                line: line,
+                file: file
+            });
+        }
+    };
+
+    let currentShader = {};
+    // Error Callback
+    console.error = function () {
+        if('7' in arguments) {
+            let errorRegex = /ERROR: \d+:(\d+):\W(.*)\n/g;
+            let rawErrors = arguments[7];
+            let match;
+            
+            let diagnostics = [];
+            let message = '';
+            while(match = errorRegex.exec(rawErrors)) {
+                let lineNumber = Number(match[1]) - currentShader.LineOffset;
+                let error = match[2];
+                diagnostics.push({
+                    line: lineNumber,
+                    message: error
+                });
+                let lineHighlight = `<a class='error' unselectable onclick='revealError(${lineNumber}, "${currentShader.File}")'>Line ${lineNumber}</a>`;
+                message += `<li>${lineHighlight}: ${error}</li>`;
+            }
+            console.log(message);
+            let diagnosticBatch = {
+                filename: currentShader.File,
+                diagnostics: diagnostics
+            };
+            if (vscode !== undefined) {
+                vscode.postMessage({
+                    command: 'showGlslDiagnostic',
+                    type: 'error',
+                    diagnosticBatch: diagnosticBatch
+                });
+            }
+    
+            $('#message').append(`<h3>Shader failed to compile - ${currentShader.Name} </h3>`);
+            $('#message').append('<ul>');
+            $('#message').append(message);
+            $('#message').append('</ul>');
+        }
+    };
+
+    // Development feature: Output warnings from third-party libraries
+    // console.warn = function (message) {
+    //     $("#message").append(message + '<br>');
+    // };
+
+    let clock = new THREE.Clock();
+    let pausedTime = 0.0;
+    let deltaTime = 0.0;
+    let startingTime = 0;
+    let time = startingTime;
+
+    let date = new THREE.Vector4();
+
+    let updateDate = function() {
+        let today = new Date();
+        date.x = today.getFullYear();
+        date.y = today.getMonth();
+        date.z = today.getDate();
+        date.w = today.getHours() * 60 * 60 
+            + today.getMinutes() * 60
+            + today.getSeconds()
+            + today.getMilliseconds() * 0.001;
+    };
+    updateDate();
+
+    let paused = false;
+    let pauseButton = document.getElementById('pause-button');
+    if (pauseButton) {
+        pauseButton.onclick = function(){
+            paused = pauseButton.checked;
+            if (!paused) {
+                // Audio Resume
+                pausedTime += clock.getDelta();
+            }
+            else {
+                // Audio Pause
+            }
+        };
+    }
+    
+    {
+        let screenshotButton = document.getElementById("screenshot");
+        if (screenshotButton) {
+            screenshotButton.addEventListener('click', saveScreenshot);
+        }
+    }
+    
+    {
+        let reloadButton = document.getElementById("reload");
+        if (reloadButton) {
+            reloadButton.addEventListener('click', reloadWebview);
+        }
+    }
+    
+    window.addEventListener('message', event => {
+        const message = event.data; // The JSON data our extension sent
+        switch (message.command) {
+            case 'pause':
+                if (pauseButton) {
+                    pauseButton.checked = !pauseButton.checked;
+                }
+                paused = !paused;
+                if (!paused) {
+                    // Audio Resume
+                    pausedTime += clock.getDelta();
+                }
+                else {
+                    // Audio Pause
+                }
+                break;
+            case 'screenshot':
+                saveScreenshot();
+                break;
+        }
+    });
+
+    let canvas = document.getElementById('canvas');
+    let gl = canvas.getContext('webgl2');
+    let isWebGL2 = gl != null;
+    if (gl == null) gl = canvas.getContext('webgl');
+    let supportsFloatFramebuffer = (gl.getExtension('EXT_color_buffer_float') != null) || (gl.getExtension('WEBGL_color_buffer_float') != null);
+    let supportsHalfFloatFramebuffer = (gl.getExtension('EXT_color_buffer_half_float') != null);
+    let framebufferType = THREE.UnsignedByteType;
+    if (supportsFloatFramebuffer) framebufferType = THREE.FloatType;
+    else if (supportsHalfFloatFramebuffer) framebufferType = THREE.HalfFloatType;
+
+    let renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, context: gl, preserveDrawingBuffer: true });
+    let resolution = new THREE.Vector3();
+    let mouse = new THREE.Vector4(323, 228, -323, -228);
+    let mouseButton = new THREE.Vector4(0, 0, 0, 0);
+    let normalizedMouse = new THREE.Vector2(0.003110419906687403, 0.7428571428571429);
+    let frameCounter = 0;
+
+    // Audio Init
+    const audioContext = {
+        sampleRate: 0
+    };
+    // Audio Resume
+
+    let buffers = [];
+    // Buffers
+    buffers.push({
+        Name: 'c:/Users/medra/source/repos/01Pollux/Gtk-Interface/Gtk Interface/fs.glsl',
+        File: 'c:/Users/medra/source/repos/01Pollux/Gtk-Interface/Gtk Interface/fs.glsl',
+        LineOffset: 133,
+        Target: null,
+        ChannelResolution: Array(10).fill(new THREE.Vector3(0,0,0)),
+        PingPongTarget: null,
+        PingPongChannel: 0,
+        Dependents: [],
+        Shader: new THREE.ShaderMaterial({
+            fragmentShader: document.getElementById('c:/Users/medra/source/repos/01Pollux/Gtk-Interface/Gtk Interface/fs.glsl').textContent,
+            depthWrite: false,
+            depthTest: false,
+            uniforms: {
+                iResolution: { type: 'v3', value: resolution },
+                iTime: { type: 'f', value: 0.0 },
+                iTimeDelta: { type: 'f', value: 0.0 },
+                iFrame: { type: 'i', value: 0 },
+                iMouse: { type: 'v4', value: mouse },
+                iMouseButton: { type: 'v2', value: mouseButton },
+    
+                iChannelResolution: { type: 'v3v', value: Array(10).fill(new THREE.Vector3(0,0,0)) },
+    
+                iDate: { type: 'v4', value: date },
+                iSampleRate: { type: 'f', value: audioContext.sampleRate },
+    
+                iChannel0: { type: 't' },
+                iChannel1: { type: 't' },
+                iChannel2: { type: 't' },
+                iChannel3: { type: 't' },
+                iChannel4: { type: 't' },
+                iChannel5: { type: 't' },
+                iChannel6: { type: 't' },
+                iChannel7: { type: 't' },
+                iChannel8: { type: 't' },
+                iChannel9: { type: 't' },
+    
+                resolution: { type: 'v2', value: resolution },
+                time: { type: 'f', value: 0.0 },
+                mouse: { type: 'v2', value: normalizedMouse },
+            }
+        })
+    });
+    let commonIncludes = [];
+    // Includes
+    
+
+    // WebGL2 inserts more lines into the shader
+    if (isWebGL2) {
+        for (let buffer of buffers) {
+            buffer.LineOffset += 16;
+        }
+    }
+
+    // Keyboard Init
+    
+    // Uniforms Init
+    // Uniforms Update
+
+    let texLoader = new THREE.TextureLoader();
+    // Texture Init
+    
+
+    let scene = new THREE.Scene();
+    let quad = new THREE.Mesh(
+        new THREE.PlaneGeometry(resolution.x, resolution.y),
+        null
+    );
+    scene.add(quad);
+    
+    let camera = new THREE.OrthographicCamera(-resolution.x / 2.0, resolution.x / 2.0, resolution.y / 2.0, -resolution.y / 2.0, 1, 1000);
+    camera.position.set(0, 0, 10);
+
+    // Run every shader once to check for compile errors
+    let compileTimeStart = performance.now();
+    let failed=0;
+    for (let include of commonIncludes) {
+        currentShader = {
+            Name: include.Name,
+            File: include.File,
+            // add two for version and precision lines
+            LineOffset: 26 + 2
+        };
+        // bail if there is an error found in the include script
+        if(compileFragShader(gl, document.getElementById(include.Name).textContent) == false) {
+            throw Error(`Failed to compile ${include.Name}`);
+        }
+    }
+
+    for (let buffer of buffers) {
+        currentShader = {
+            Name: buffer.Name,
+            File: buffer.File,
+            LineOffset: buffer.LineOffset
+        };
+        quad.material = buffer.Shader;
+        renderer.setRenderTarget(buffer.Target);
+        renderer.render(scene, camera);
+    }
+    currentShader = {};
+    let compileTimeEnd = performance.now();
+    let compileTime = compileTimeEnd - compileTimeStart;
+    if (compileTimePanel !== undefined) {
+        for (let i = 0; i < 200; i++) {
+            compileTimePanel.update(compileTime, 200);
+        }
+    }
+
+    computeSize();
+    render();
+
+    function addLineNumbers( string ) {
+        let lines = string.split( '\\n' );
+        for ( let i = 0; i < lines.length; i ++ ) {
+            lines[ i ] = ( i + 1 ) + ': ' + lines[ i ];
+        }
+        return lines.join( '\\n' );
+    }
+
+    function compileFragShader(gl, fsSource) {
+        const fs = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fs, fsSource);
+        gl.compileShader(fs);
+        if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
+            const fragmentLog = gl.getShaderInfoLog(fs);
+            console.error( 'THREE.WebGLProgram: shader error: ', gl.getError(), 'gl.COMPILE_STATUS', null, null, null, null, fragmentLog );
+            return false;
+        }
+        return true;
+    }
+
+    function render() {
+        requestAnimationFrame(render);
+        // Pause Whole Render
+        if (paused) return;
+
+        // Advance Time
+        deltaTime = clock.getDelta();
+        time = startingTime + clock.getElapsedTime() - pausedTime;
+        updateDate();
+
+        // Audio Update
+
+        for (let buffer of buffers) {
+            buffer.Shader.uniforms['iResolution'].value = resolution;
+            buffer.Shader.uniforms['iTimeDelta'].value = deltaTime;
+            buffer.Shader.uniforms['iTime'].value = time;
+            buffer.Shader.uniforms['iFrame'].value = frameCounter;
+            buffer.Shader.uniforms['iMouse'].value = mouse;
+            buffer.Shader.uniforms['iMouseButton'].value = mouseButton;
+
+            buffer.Shader.uniforms['resolution'].value = resolution;
+            buffer.Shader.uniforms['time'].value = time;
+            buffer.Shader.uniforms['mouse'].value = normalizedMouse;
+
+            quad.material = buffer.Shader;
+            renderer.setRenderTarget(buffer.Target);
+            renderer.render(scene, camera);
+        }
+        
+        // Uniforms Update
+
+        // Keyboard Update
+
+        for (let buffer of buffers) {
+            if (buffer.PingPongTarget) {
+                [buffer.PingPongTarget, buffer.Target] = [buffer.Target, buffer.PingPongTarget];
+                buffer.Shader.uniforms[`iChannel${buffer.PingPongChannel}`].value = buffer.PingPongTarget.texture;
+                for (let dependent of buffer.Dependents) {
+                    const dependentBuffer = buffers[dependent.Index];
+                    dependentBuffer.Shader.uniforms[`iChannel${dependent.Channel}`].value = buffer.Target.texture;
+                }
+            }
+        }
+
+        frameCounter++;
+    }
+    function computeSize() {
+        let forceAspectRatio = (width, height) => {
+            // Forced aspect ratio
+            let forcedAspects = [0,0];
+            let forcedAspectRatio = forcedAspects[0] / forcedAspects[1];
+            let aspectRatio = width / height;
+
+            if (forcedAspectRatio <= 0 || !isFinite(forcedAspectRatio)) {
+                let resolution = new THREE.Vector3(width, height, 1.0);
+                return resolution;
+            }
+            else if (aspectRatio < forcedAspectRatio) {
+                let resolution = new THREE.Vector3(width, Math.floor(width / forcedAspectRatio), 1);
+                return resolution;
+            }
+            else {
+                let resolution = new THREE.Vector3(Math.floor(height * forcedAspectRatio), height, 1);
+                return resolution;
+            }
+        };
+        
+        // Compute forced aspect ratio and align canvas
+        resolution = forceAspectRatio(window.innerWidth, window.innerHeight);
+        canvas.style.left = `${(window.innerWidth - resolution.x) / 2}px`;
+        canvas.style.top = `${(window.innerHeight - resolution.y) / 2}px`;
+
+        for (let buffer of buffers) {
+            if (buffer.Target) {
+                buffer.Target.setSize(resolution.x, resolution.y);
+            }
+            if (buffer.PingPongTarget) {
+                buffer.PingPongTarget.setSize(resolution.x, resolution.y);
+            }
+        }
+        renderer.setSize(resolution.x, resolution.y, false);
+        
+        // Update Camera and Mesh
+        quad.geometry = new THREE.PlaneGeometry(resolution.x, resolution.y);
+        camera.left = -resolution.x / 2.0;
+        camera.right = resolution.x / 2.0;
+        camera.top = resolution.y / 2.0;
+        camera.bottom = -resolution.y / 2.0;
+        camera.updateProjectionMatrix();
+
+        // Reset iFrame on resize for shaders that rely on first-frame setups
+        frameCounter = 0;
+    }
+    function saveScreenshot() {
+        let doSaveScreenshot = () => {
+            renderer.domElement.toBlob(function(blob){
+                let a = document.createElement('a');
+                let url = URL.createObjectURL(blob);
+                a.href = url;
+                a.download = 'shadertoy.png';
+                a.click();
+            }, 'image/png', 1.0);
+        };
+
+        let forcedScreenshotResolution = [0,0];
+        if (forcedScreenshotResolution[0] <= 0 || forcedScreenshotResolution[1] <= 0) {
+            renderer.render(scene, camera);
+            doSaveScreenshot();
+        }
+        else {
+            renderer.setSize(forcedScreenshotResolution[0], forcedScreenshotResolution[1], false);
+            
+            for (let buffer of buffers) {
+                buffer.Shader.uniforms['iResolution'].value = new THREE.Vector3(forcedScreenshotResolution[0], forcedScreenshotResolution[1], 1);
+                buffer.Shader.uniforms['resolution'].value = new THREE.Vector3(forcedScreenshotResolution[0], forcedScreenshotResolution[1], 1);
+
+                quad.material = buffer.Shader;
+                renderer.setRenderTarget(buffer.Target);
+                renderer.render(scene, camera);
+            }
+
+            doSaveScreenshot();
+            renderer.setSize(resolution.x, resolution.y, false);
+        }
+    }
+    function reloadWebview() {
+        if (vscode !== undefined) {
+            vscode.postMessage({ command: 'reloadWebview' });
+        }
+    }
+    function updateMouse() {
+        if (vscode !== undefined) {
+            vscode.postMessage({
+                command: 'updateMouse',
+                mouse: {
+                    x: mouse.x,
+                    y: mouse.y,
+                    z: mouse.z,
+                    w: mouse.w
+                },
+                normalizedMouse: {
+                    x: normalizedMouse.x,
+                    y: normalizedMouse.y
+                }
+            });
+        }
+    }
+    let dragging = false;
+    function updateNormalizedMouseCoordinates(clientX, clientY) {
+        let rect = canvas.getBoundingClientRect();
+        let mouseX = clientX - rect.left;
+        let mouseY = resolution.y - clientY - rect.top;
+
+        if (mouseButton.x + mouseButton.y != 0) {
+            mouse.x = mouseX;
+            mouse.y = mouseY;
+        }
+
+        normalizedMouse.x = mouseX / resolution.x;
+        normalizedMouse.y = mouseY / resolution.y;
+    }
+    canvas.addEventListener('mousemove', function(evt) {
+        updateNormalizedMouseCoordinates(evt.clientX, evt.clientY);
+        updateMouse();
+    }, false);
+    canvas.addEventListener('mousedown', function(evt) {
+        if (evt.button == 0)
+            mouseButton.x = 1;
+        if (evt.button == 2)
+            mouseButton.y = 1;
+
+        if (!dragging) {
+            updateNormalizedMouseCoordinates(evt.clientX, evt.clientY);
+            mouse.z = mouse.x;
+            mouse.w = mouse.y;
+            dragging = true
+        }
+
+        updateMouse();
+    }, false);
+    canvas.addEventListener('mouseup', function(evt) {
+        if (evt.button == 0)
+            mouseButton.x = 0;
+        if (evt.button == 2)
+            mouseButton.y = 0;
+
+        dragging = false;
+        mouse.z = -mouse.z;
+        mouse.w = -mouse.w;
+
+        updateMouse();
+    }, false);
+    window.addEventListener('resize', function() {
+        computeSize();
+    });
+
+    // Keyboard Callbacks
+</script>

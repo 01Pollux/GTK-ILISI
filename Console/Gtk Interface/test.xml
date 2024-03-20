@@ -1,0 +1,53 @@
+<Application>
+	<Window Title="Test" Id="Tooltip_test" Size="100x100">
+		<Private>
+			<Hidden></Hidden>
+		</Private>
+		<Box Orientation="V">
+			<Label Text="Hello world"></Label>
+		</Box>
+	</Window>
+	
+	<Window Title="Console" Size="400x600">
+		<ScrolledWindow Id="Scrollable" VVisibility="true">
+			<Box Orientation="V" Id="MainBox">
+				
+				<Toolbar>
+					<ToolbarItem Name="File">
+						<ToolbarItem Name="Open" Id="ww" Icon="C:\Users\medra\source\repos\Gtk Interface\Gtk Interface\95568702_p0.jpg">
+
+						</ToolbarItem>
+						<ToolbarItem Name="Close">
+							<Private>
+								<Tooltip Text="testing"></Tooltip>
+							</Private>
+						</ToolbarItem>
+					</ToolbarItem>
+				</Toolbar>
+				
+				<Box Orientation="H" Id="Head">
+					<Label Text="Filter:"></Label>
+					<TextInput Id="FilterText">
+						<Private>
+							<Tooltip Window="Tooltip_test" Text="testing">
+							</Tooltip>
+						</Private>
+					</TextInput>
+					<Label Text="('incl,-excl')"></Label>
+				</Box>
+				<Box Orientation="V" Id="TextArea">
+					<ScrolledWindow Id="Scrollable" HVisibility="true" VVisibility="true">
+						<Private>
+							<Size Height="460"></Size>
+						</Private>
+						<TextArea Id="OuputText" Editable="false" Text="Hello world"></TextArea>
+					</ScrolledWindow>
+				</Box>
+				<Box Orientation="H" Id="Tail">
+					<Label Text="Input: "></Label>
+					<TextInput Id="InputText"></TextInput>
+				</Box>
+			</Box>
+		</ScrolledWindow>
+	</Window>
+</Application>

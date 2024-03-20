@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="CheckerPositionTree">
+		<DisplayString>({(int)X},{(int)Y})</DisplayString>
+		<Expand>
+			<Synthetic Name="Top Left" Condition="TopLeftCount > 0">
+				<Expand>
+					<ArrayItems>
+						<Size>TopLeftCount</Size>
+						<ValuePointer>TopLeft</ValuePointer>
+					</ArrayItems>
+				</Expand>
+			</Synthetic>
+			<Synthetic Name="Top Right" Condition="TopRightCount > 0">
+				<Expand>
+					<ArrayItems>
+						<Size>TopRightCount</Size>
+						<ValuePointer>TopRight</ValuePointer>
+					</ArrayItems>
+				</Expand>
+			</Synthetic>
+			<Synthetic Name="Bottom Left" Condition="BottomLeftCount > 0">
+				<Expand>
+					<ArrayItems>
+						<Size>BottomLeftCount</Size>
+						<ValuePointer>BottomLeft</ValuePointer>
+					</ArrayItems>
+				</Expand>
+			</Synthetic>
+			<Synthetic Name="Bottom Right" Condition="BottomRightCount > 0">
+				<Expand>
+					<ArrayItems>
+						<Size>BottomRightCount</Size>
+						<ValuePointer>BottomRight</ValuePointer>
+					</ArrayItems>
+				</Expand>
+			</Synthetic>
+		</Expand>
+	</Type>
+</AutoVisualizer>

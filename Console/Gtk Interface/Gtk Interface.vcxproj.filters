@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\Toolbar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\Window.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\XmlReader.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\Box.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\Button.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\Combo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\Text_Input.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\Image.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\Label.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\ScrolledWindow.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Creator\Widgets\TextArea.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Creator\Widgets\Toolbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\XmlReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\Combo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\GtkEssentiels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\Text_Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\Image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\Label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\ScrolledWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Creator\Widgets\TextArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="test.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hah.js" />
+  </ItemGroup>
+</Project>

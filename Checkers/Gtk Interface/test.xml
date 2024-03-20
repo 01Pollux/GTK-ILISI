@@ -1,0 +1,261 @@
+<Application>
+	<Window Size="1400x800" Title="" Icon="abdo.png">
+		<Private>
+			<Style>
+				<S1 Text="* { border: red solid 2px; }"></S1>
+			</Style>
+		</Private>
+
+		<Headerbar Title="Test des fonction GTK+" Layout="icon,menu:minimize,close,maximize"></Headerbar>
+
+		<Box>
+			
+			<Toolbar>
+				<ToolbarItem Name="MonChoix">
+					<ToolbarItem Name="Sous choix1">
+						<Private>
+							<Style>
+								<S0 Text="* { border: orange solid 2px; }"></S0>
+							</Style>
+						</Private>
+					</ToolbarItem>
+					<ToolbarItem Name="Sous choix2">
+						<ToolbarItem Name="Choix221">
+							<ToolbarItem Name="Choix222">
+								<ToolbarItem Name="Choix223"></ToolbarItem>
+							</ToolbarItem>
+						</ToolbarItem>
+					</ToolbarItem>
+					<ToolbarItem Name="Sous choix3"></ToolbarItem>
+				</ToolbarItem>
+				<ToolbarItem Name="VotreChoix">
+					<ToolbarItem Name="Sous choix1"></ToolbarItem>
+					<ToolbarItem Name="Sous choix2">
+						<ToolbarItem Name="Choix221">
+							<ToolbarItem Name="Choix222">
+								<ToolbarItem Name="Choix223"></ToolbarItem>
+							</ToolbarItem>
+						</ToolbarItem>
+					</ToolbarItem>
+					<ToolbarItem Name="Sous choix3"></ToolbarItem>
+				</ToolbarItem>
+				<ToolbarItem Name="LeurChoix">
+					<ToolbarItem Name="Sous choix1"></ToolbarItem>
+					<ToolbarItem Name="Sous choix2">
+						<ToolbarItem Name="Choix221">
+							<ToolbarItem Name="Choix222">
+								<ToolbarItem Name="Choix223"></ToolbarItem>
+							</ToolbarItem>
+						</ToolbarItem>
+					</ToolbarItem>
+					<ToolbarItem Name="Sous choix3"></ToolbarItem>
+				</ToolbarItem>
+			</Toolbar>
+
+			<ScrolledWindow HVisibility="ALWAYS" VVisibility="ALWAYS" Fill="true" Expand="true">
+				<Box>
+					<Label Text="Vos connaissance de GTK+">
+						<Private>
+							<Align Horizontal="Start"></Align>
+						</Private>
+					</Label>
+					<Box Orientation="H">
+						<Private>
+							<Align Vertical="Start" Horizontal="Start">
+							</Align>
+							<Style>
+								<S0 Text="* { border: blue solid 2px; }"></S0>
+							</Style>
+						</Private>
+						<Button Type="Radio" Text="Faible" Id="ScoreRadio">
+							<Private>
+								<Style>
+									<S0 Text="radio { border: green solid 2px; }"></S0>
+								</Style>
+							</Private>
+						</Button>
+						<Button Type="Radio" Text="Moyen" LinkId="ScoreRadio"></Button>
+						<Button Type="Radio" Text="Bien" LinkId="ScoreRadio"></Button>
+						<Button Type="Radio" Text="Tres bien" Id="olkalkl" LinkId="ScoreRadio"></Button>
+					</Box>
+
+					<Label Text="Vos connaissance de GTK+">
+						<Private>
+							<Align Horizontal="Start"></Align>
+						</Private>
+					</Label>
+					<Box Orientation="H">
+						<Private>
+							<Align Vertical="Start" Horizontal="Start">
+							</Align>
+							<Style>
+								<S0 Text="* { border: blue solid 2px; }"></S0>
+							</Style>
+						</Private>
+						<Button Type="CheckBox" Text="Convivial">
+							<Private>
+								<Style>
+									<S0 Text="check { border: blue solid 2px; }"></S0>
+								</Style>
+							</Private>
+						</Button>
+						<Button Type="CheckBox" Text="Interessant"></Button>
+						<Button Type="CheckBox" Text="Facile a utiliser"></Button>
+						<Button Type="CheckBox" Text="Optimise le travail"></Button>
+					</Box>
+
+					<Label Text="Le CoronaVirus">
+						<Private>
+							<Align Horizontal="Start"></Align>
+						</Private>
+					</Label>
+					<Box Orientation="H">
+						<Private>
+							<Align Vertical="Start" Horizontal="Start">
+							</Align>
+							<Style>
+								<S0 Text="* { border: blue solid 2px; }"></S0>
+							</Style>
+						</Private>
+						<Button Type="Radio" Text="Malade" Id="CoronaRadio"></Button>
+						<Button Type="Radio" Text="Suspect" LinkId="CoronaRadio"></Button>
+						<Button Type="Radio" Text="Gueri" LinkId="CoronaRadio"></Button>
+						<Button Type="Radio" Text="Sain" LinkId="CoronaRadio"></Button>
+					</Box>
+
+					<Label Text="Choix de date">
+						<Private>
+							<Align Horizontal="Start"></Align>
+						</Private>
+					</Label>
+					<Box Orientation="H" Id="JourDate">
+						<Label Text="Jour">
+							<Private>
+								<Align Horizontal="Start"></Align>
+							</Private>
+						</Label>
+						<ComboBox Id="JourCombo"></ComboBox>
+
+						<Label Text="Mois">
+							<Private>
+								<Align Horizontal="Start"></Align>
+							</Private>
+						</Label>
+						<ComboBox Id="MoisCombo"></ComboBox>
+
+						<Label Text="Annee">
+							<Private>
+								<Align Horizontal="Start"></Align>
+							</Private>
+						</Label>
+						<ComboBox Id="AnneeCombo"></ComboBox>
+					</Box>
+
+					<ComboBox Id="FC">
+						<Private>
+							<Align Horizontal="Start"></Align>
+						</Private>
+						<ComboBoxItem Text="Faire Un Choix"></ComboBoxItem>
+						<ComboBoxItem Text="Choix1"></ComboBoxItem>
+						<ComboBoxItem Text="Choix2"></ComboBoxItem>
+						<ComboBoxItem Text="Choix3"></ComboBoxItem>
+					</ComboBox>
+
+					<Box Orientation="H" Insert="End">
+						<Private>
+							<Align Horizontal="End"></Align>
+						</Private>
+
+						<Button Type="Label" Text="OK" Id="OkBt">
+							<Private>
+								<Style>
+									<S0 Text="* {background-image: url('2209427_83125267_p0.png'); }"></S0>
+								</Style>
+							</Private>
+						</Button>
+						<Button Type="Label" Text="QUITTER" Id="AnBt">
+							<Private>
+								<Style>
+									<S0 Text="* {background-image: url('2209427_83125267_p0.png'); }"></S0>
+								</Style>
+							</Private>
+						</Button>
+					</Box>
+
+
+
+					<Box Orientation="V" Insert="End">
+						<Private>
+							<Align Horizontal="End">
+
+							</Align>
+						</Private>
+
+						<Box Padding="0">
+							<Label Text="Le Corona Virus" Padding="0">
+								<Private>
+									<Align Horizontal="Start">
+
+									</Align>
+								</Private>
+							</Label>
+						</Box >
+						<Box Orientation="H" Insert="End" Padding="0">
+							<Private>
+								<Style>
+									<S0 Text="* { border: blue solid 2px; }"></S0>
+								</Style>
+							</Private>
+							<Button Type="Radio" Text="Malade" Id="ScoreRadio"></Button>
+							<Button Type="Radio" Text="Suspect" LinkId="ScoreRadio"></Button>
+							<Button Type="Radio" Text="Gueri" LinkId="ScoreRadio"></Button>
+							<Button Type="Radio" Text="Sain" Id="Sain" LinkId="ScoreRadio"></Button>
+						</Box>
+					</Box>
+
+					<Notebook >
+						<NotebookMap>
+							<Tag1 TabName="Hello" MenuName="HHo"></Tag1>
+							<World TabName="World"></World>
+							<Tagggg TabName="HHHH"></Tagggg>
+						</NotebookMap>
+						<Box NotebookTag="Tagggg">
+
+						</Box>
+						<Box NotebookTag="Tag1">
+
+						</Box>
+						<Box NotebookTag="World">
+
+						</Box>
+					</Notebook>
+				</Box>
+			</ScrolledWindow>
+		</Box>
+	</Window>
+	<Window Size="500x200" Title="" Id="SecondWindow">
+		<Private>
+			<Hidden></Hidden>
+		</Private>
+		<Headerbar Layout="menu:close">
+		</Headerbar>
+		<Box>
+			<Box Orientation="H">
+				<Private>
+					<Align Horizontal="Center"></Align>
+				</Private>
+				<Image Path="2209427_83215207_p0.png" Size="50x50">
+				</Image>
+				<Label Text="Voulez vous afficher une image?"></Label>
+			</Box>
+			<Box Orientation="H">
+				<Private>
+					<Align Horizontal="Center"></Align>
+				</Private>
+				<Button Type="Label" Text="Oui"></Button>
+				<Button Type="Label" Text="Non"></Button>
+				<Button Type="Label" Text="Annuler"></Button>
+			</Box>
+		</Box>
+	</Window>
+</Application>

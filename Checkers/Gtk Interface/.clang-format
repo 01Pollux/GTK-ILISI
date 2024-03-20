@@ -1,0 +1,15 @@
+---
+BasedOnStyle: Microsoft
+SortIncludes: Never
+ColumnLimit: 0
+PointerAlignment: Left
+AccessModifierOffset: -4
+NamespaceIndentation: All
+BreakConstructorInitializers: AfterColon
+Cpp11BracedListStyle: false
+BraceWrapping:
+  AfterCaseLabel: true
+  BeforeLambdaBody: true
+SpaceAfterTemplateKeyword: false
+AlignConsecutiveMacros: Consecutive
+AllowAllArgumentsOnNextLine: false

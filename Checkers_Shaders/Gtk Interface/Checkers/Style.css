@@ -1,0 +1,17 @@
+window {
+    background-color: pink;
+}
+
+grid {
+    border: red 1px solid;
+}
+
+image {
+}
+
+button {
+    border-radius: 50%;
+    padding: 0px;
+    margin: 5px;
+    border: 0px;
+}
